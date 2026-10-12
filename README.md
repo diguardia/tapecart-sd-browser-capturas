@@ -1,46 +1,51 @@
-# Tapecart SD Browser con capturas
+# Tapecart SD Browser con capturas / with screenshots
 
-*[English version](README.en.md)*
+**[Español](#español)** · **[English](#english)**
+
+| Listado / List | Captura / Screenshot (SPACE) | Créditos / Credits (`.`) |
+|---|---|---|
+| ![listado](docs/img/listado.png) | ![captura](docs/img/captura.png) | ![creditos](docs/img/creditos.png) |
+
+*(Imágenes tomadas en el emulador VICE / Captured in the VICE emulator.)*
+
+---
+
+## Español
 
 Browser para el **Tapecart SD** de la Commodore 64 que muestra el **nombre completo, año, género y editor**
-de cada juego y su **captura de pantalla**, directamente en la C64.
+de cada juego y su **captura de pantalla**, directamente en la C64. Incluye además un
+**[catálogo para el celular](https://diguardia.github.io/tapecart-sd-browser-capturas/)** para elegir los juegos.
 
 Es un **fork de [Tapecart SD Browser v1.4-TAP](https://github.com/rainisto/tapecart/tree/new_tap_with_1.4)**
 (Jonni Rainisto, con el soporte de TAP de Jarkko Sonninen), que a su vez deriva de [Tapecart SD](https://github.com/KimJorgensen/tapecart) de Kim Jørgensen,
 de [tapecart](https://github.com/ikorb/tapecart) de Ingo Korb y de Draco Browser de Sascha Bader.
 Ver [CREDITOS.md](CREDITOS.md).
 
-Fork por **Christian Di Guardia**, 2026.
+Fork por **Christian Di Guardia** (Argentina), 2026.
 
-| Listado | Captura (tecla ESPACIO) | Créditos (tecla `.`) |
-|---|---|---|
-| ![listado](docs/img/listado.png) | ![captura](docs/img/captura.png) | ![creditos](docs/img/creditos.png) |
+### Qué agrega al browser original
 
-*(Imágenes tomadas en el emulador VICE.)*
-
-## Qué agrega al browser original
-
-- En carpetas con `index.db`: nombre completo (hasta 30 caracteres, el firmware solo muestra 16), año, género y editor.
+- En carpetas con `index.db`: nombre completo (hasta 30 caracteres; el firmware solo muestra 16), año, género y editor.
 - En carpetas con `shots.db`: **ESPACIO** muestra la captura del juego (bitmap hires o multicolor). RETURN desde la captura carga el juego.
 - Carpetas sin índice: funciona como el original, pero **ordena alfabéticamente** (el original muestra el orden físico de la SD).
 - Oculta carpetas de sistema (`System Volume Information`, `$RECYCLE.BIN`, archivos de macOS).
 - Carga PRG, TCRT y TAP igual que el original. **No hace falta cambiar el firmware.**
 
-## Requisitos
+### Requisitos
 
 - Tapecart SD con firmware **v1.4-TAP** ([rainisto/tapecart, rama `new_tap_with_1.4`](https://github.com/rainisto/tapecart/tree/new_tap_with_1.4)).
   Debería andar también con el firmware v1.4 de Kim Jørgensen, salvo la carga de TAP. *Sin probar.*
 - Para compilar: [cc65](https://cc65.github.io).
 - Para generar índices y capturas: Python 3, tu propia copia de [GameBase64](https://www.gb64.com) y,
-  para exportar su base, Windows con el driver ODBC de Access y [innoextract](https://constexpr.org/innoextract/).
+  para exportar su base, Windows con el driver ODBC de Access e [innoextract](https://constexpr.org/innoextract/).
 
-## Instalación
+### Instalación
 
 1. Hacé una copia de tu `browser.prg` original.
 2. Copiá `bin/browser.prg` a la raíz de la SD. El firmware siempre carga `/browser.prg`.
 3. Sin índices, ya funciona: listado ordenado alfabéticamente.
 
-## Generar índices y capturas para tu colección
+### Generar índices y capturas para tu colección
 
 Los datos y capturas de GameBase64 son **solo para uso personal** (ver *Licencias*). Por eso este proyecto
 no incluye ningún índice: cada usuario los genera con su propia copia.
@@ -58,22 +63,27 @@ no incluye ningún índice: cada usuario los genera con su propia copia.
    `python -I tools\gen_db.py E:\ catalog.json Screenshots out`
 6. Copiá cada `out\<carpeta>\index.db` y `shots.db` a la misma carpeta de la SD.
 
-## Catálogo para el celular
-
-Para elegir el juego desde el teléfono (con búsqueda, índice A-Z, géneros, favoritos y la ruta exacta en la SD):
-
-1. `python -I tools\catalogo_html.py catalog.json Screenshots catalogo`
-2. `python -I tools\servir_catalogo.py catalogo`
-3. Abrí en el celular la dirección que muestra (por ejemplo `http://192.168.0.10:8064/`). El celular tiene que estar en el mismo Wi-Fi.
-
-El catálogo queda solo en tu red: las capturas de GameBase64 son de uso personal y no se deben publicar en internet.
-
 Consejos:
 - **Nombres de 16 caracteres como máximo** (extensión incluida). Los más largos el firmware los muestra en formato 8.3 (`LASTNI~1.TAP`).
 - Si agregás juegos a una carpeta con índice, el browser lo detecta y muestra el listado normal hasta que regeneres el índice.
 - El firmware **no carga D64/G64/T64**.
 
-## Teclas
+### Catálogo para el celular
+
+**<https://diguardia.github.io/tapecart-sd-browser-capturas/>**: búsqueda, índice A-Z, géneros, favoritos,
+captura ampliada y la ruta exacta de cada juego en la SD.
+
+La página no trae datos: la primera vez elegís tu archivo `catalogo-c64.json` (por ejemplo, desde Google Drive)
+y queda guardado solo en ese teléfono. El archivo se genera con:
+
+`python -I tools\catalogo_html.py --pack catalog.json Screenshots catalogo-c64.json`
+
+No publiques ese archivo: contiene capturas y datos de GameBase64, que son de uso personal.
+
+*Alternativa sin internet:* `tools\catalogo_html.py catalog.json Screenshots catalogo` y después
+`tools\servir_catalogo.py catalogo` lo sirve en la red de casa.
+
+### Teclas
 
 | Tecla | Acción |
 |---|---|
@@ -87,7 +97,7 @@ Consejos:
 | `.` | créditos y ayuda |
 | Q | salir |
 
-## Compilar
+### Compilar
 
 ```
 build.bat      (Windows)
@@ -97,12 +107,12 @@ build.bat      (Windows)
 El browser se puede probar en VICE con `browser/mock_tapecartif.c`, que simula el tapecart leyendo
 `dirlist`, `index.db` y `shots.db` desde una carpeta del PC montada como unidad 8.
 
-## Estado
+### Estado
 
 - Probado en VICE (listado, capturas, orden y créditos) y en uso en una C128 en modo 64 con Tapecart SD.
 - Formato de los archivos: [docs/FORMATO.md](docs/FORMATO.md).
 
-## Licencias
+### Licencias
 
 - **Código derivado de Draco Browser:** se puede usar libremente conservando el aviso del origen y del autor.
 - **Código derivado de tapecart (Ingo Korb):** licencia BSD de 2 cláusulas, conservada en cada archivo.
@@ -112,3 +122,117 @@ El browser se puede probar en VICE con `browser/mock_tapecartif.c`, que simula e
 - **Juegos:** este proyecto no incluye ni enlaza juegos.
 
 SIN GARANTÍA. ÚSELO BAJO SU PROPIO RIESGO.
+
+---
+
+## English
+
+A browser for the Commodore 64 **Tapecart SD** that shows each game's **full name, year, genre and publisher**
+and its **screenshot**, right on the C64. It also comes with a
+**[phone catalog](https://diguardia.github.io/tapecart-sd-browser-capturas/)** to pick games from.
+
+It is a **fork of [Tapecart SD Browser v1.4-TAP](https://github.com/rainisto/tapecart/tree/new_tap_with_1.4)**
+(Jonni Rainisto, with TAP support by Jarkko Sonninen), itself derived from [Tapecart SD](https://github.com/KimJorgensen/tapecart)
+by Kim Jørgensen, [tapecart](https://github.com/ikorb/tapecart) by Ingo Korb and Draco Browser by Sascha Bader.
+See [CREDITOS.md](CREDITOS.md).
+
+Fork by **Christian Di Guardia** (Argentina), 2026. The on-screen texts are in Spanish.
+
+### What it adds
+
+- Folders with an `index.db`: full name (up to 30 characters; the firmware only shows 16), year, genre and publisher.
+- Folders with a `shots.db`: **SPACE** shows the game's screenshot (hires or multicolor bitmap); RETURN from there loads the game.
+- Folders without an index work like the original, but are **sorted alphabetically** (the original shows the physical SD order).
+- Hides system folders (`System Volume Information`, `$RECYCLE.BIN`, macOS files).
+- Loads PRG, TCRT and TAP like the original. **No firmware change needed.**
+
+### Requirements
+
+- Tapecart SD with firmware **v1.4-TAP** ([rainisto/tapecart, branch `new_tap_with_1.4`](https://github.com/rainisto/tapecart/tree/new_tap_with_1.4)).
+  It should also work with Kim Jørgensen's v1.4 firmware, except TAP loading. *Untested.*
+- To build: [cc65](https://cc65.github.io).
+- To generate indexes and screenshots: Python 3, your own copy of [GameBase64](https://www.gb64.com) and,
+  to export its database, Windows with the Access ODBC driver and [innoextract](https://constexpr.org/innoextract/).
+
+### Install
+
+1. Back up your original `browser.prg`.
+2. Copy `bin/browser.prg` to the SD root. The firmware always loads `/browser.prg`.
+3. Without indexes it already works, with an alphabetically sorted listing.
+
+### Generating indexes and screenshots for your collection
+
+GameBase64 data and screenshots are **for personal use only** (see *Licenses*), so this project ships no
+index files: every user builds their own from their own copy.
+
+1. Download the *GB64 Database* and *GB64 Screenshots* from [gb64.com/downloads.php](https://www.gb64.com/downloads.php).
+2. Extract `GBC_vXX.mdb` from the installer without running it:
+   `innoextract -I GBC_v19.mdb gb64v19.exe`
+3. Export the database to CSV:
+   `powershell -File tools\export_gb64.ps1 -Mdb app\GBC_v19.mdb -Out games.csv`
+4. Build the catalog of your SD (e.g. `E:\`):
+   `python -I tools\build_catalog.py E:\ games.csv catalog.json`
+   - For files with short names, put the real title in `E:\titulos.csv` (lines `folder/file;Title`).
+5. Generate indexes and screenshots:
+   `python -I tools\gen_db.py E:\ catalog.json Screenshots out`
+6. Copy each `out\<folder>\index.db` and `shots.db` into the same folder on the SD.
+
+Tips:
+- **Keep file names at 16 characters or fewer** (extension included); longer ones show as 8.3 names (`LASTNI~1.TAP`).
+- If you add games to an indexed folder, the browser notices and shows the plain listing until you regenerate the index.
+- The firmware **does not load D64/G64/T64**.
+
+### Phone catalog
+
+**<https://diguardia.github.io/tapecart-sd-browser-capturas/>**: search, A-Z index, genres, favorites,
+enlarged screenshots and the exact SD path of every game.
+
+The page ships no data: the first time you pick your `catalogo-c64.json` file (e.g. from Google Drive),
+and it is stored only on that phone. Build the file with:
+
+`python -I tools\catalogo_html.py --pack catalog.json Screenshots catalogo-c64.json`
+
+Don't publish that file: it contains GameBase64 screenshots and data, which are for personal use.
+
+*Offline alternative:* `tools\catalogo_html.py catalog.json Screenshots catalogo`, then
+`tools\servir_catalogo.py catalogo` serves it on your home network.
+
+### Keys
+
+| Key | Action |
+|---|---|
+| RETURN / fire | play / open folder |
+| SPACE | show screenshot |
+| DEL | parent folder |
+| HOME | root folder |
+| Cursor ↑↓ | move |
+| Cursor ←→ | previous / next page |
+| T / B | top / bottom |
+| `.` | credits and help |
+| Q | quit |
+
+### Build
+
+```
+build.bat      (Windows)
+./build.sh     (Linux / macOS)
+```
+
+The browser can be tested in VICE with `browser/mock_tapecartif.c`, which fakes the tapecart by reading
+`dirlist`, `index.db` and `shots.db` from a PC folder mounted as drive 8.
+
+### Status
+
+- Tested in VICE (listing, screenshots, sorting and credits) and in use on a C128 in C64 mode with a Tapecart SD.
+- File formats: [docs/FORMATO.md](docs/FORMATO.md) (Spanish).
+
+### Licenses
+
+- **Code derived from Draco Browser:** free to use as long as the notice of origin and author is kept.
+- **Code derived from tapecart (Ingo Korb):** 2-clause BSD license, kept in each file.
+- **Changes in this fork:** same terms, keeping these notices.
+- **GameBase64:** data and screenshots © GB64 Team, **personal use only**. This project **does not include or redistribute them**.
+  The tools read each user's own copy from [gb64.com](https://www.gb64.com).
+- **Games:** this project neither includes nor links to any games.
+
+NO WARRANTY. USE AT YOUR OWN RISK.
