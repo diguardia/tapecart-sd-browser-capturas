@@ -83,6 +83,11 @@ No publiques ese archivo: contiene capturas y datos de GameBase64, que son de us
 *Alternativa sin internet:* `tools\catalogo_html.py catalog.json Screenshots catalogo` y después
 `tools\servir_catalogo.py catalogo` lo sirve en la red de casa.
 
+### ¿PAL, PAL-N o NTSC?
+
+Muchos juegos europeos (PAL) fallan en máquinas NTSC o PAL-N (Drean, Argentina): parpadeos, gráficos rotos o cuelgues.
+`bin/norma.prg` muestra la norma de video de tu máquina (fuente en `norma/norma.c`).
+
 ### Teclas
 
 | Tecla | Acción |
@@ -196,6 +201,11 @@ Don't publish that file: it contains GameBase64 screenshots and data, which are 
 
 *Offline alternative:* `tools\catalogo_html.py catalog.json Screenshots catalogo`, then
 `tools\servir_catalogo.py catalogo` serves it on your home network.
+
+### PAL, PAL-N or NTSC?
+
+Many European (PAL) games glitch on NTSC or PAL-N machines (Drean, Argentina): flicker, broken graphics or crashes.
+`bin/norma.prg` shows your machine's video standard (source in `norma/norma.c`).
 
 ### Keys
 
