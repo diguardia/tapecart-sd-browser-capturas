@@ -57,6 +57,16 @@ index files: every user builds their own from their own copy.
    `python -I tools\gen_db.py E:\ catalog.json Screenshots out`
 6. Copy each `out\<folder>\index.db` and `shots.db` into the same folder on the SD.
 
+## Phone catalog
+
+To pick games from your phone (search, A-Z index, genres, favorites and the exact SD path):
+
+1. `python -I tools\catalogo_html.py catalog.json Screenshots catalogo`
+2. `python -I tools\servir_catalogo.py catalogo`
+3. Open the address it prints (e.g. `http://192.168.0.10:8064/`) on your phone, on the same Wi-Fi.
+
+It stays on your home network: GameBase64 screenshots are for personal use and must not be published online.
+
 Tips:
 - **Keep file names at 16 characters or fewer** (extension included); longer ones show as 8.3 names (`LASTNI~1.TAP`).
 - If you add games to an indexed folder, the browser notices and shows the plain listing until you regenerate the index.

@@ -58,6 +58,16 @@ no incluye ningún índice: cada usuario los genera con su propia copia.
    `python -I tools\gen_db.py E:\ catalog.json Screenshots out`
 6. Copiá cada `out\<carpeta>\index.db` y `shots.db` a la misma carpeta de la SD.
 
+## Catálogo para el celular
+
+Para elegir el juego desde el teléfono (con búsqueda, índice A-Z, géneros, favoritos y la ruta exacta en la SD):
+
+1. `python -I tools\catalogo_html.py catalog.json Screenshots catalogo`
+2. `python -I tools\servir_catalogo.py catalogo`
+3. Abrí en el celular la dirección que muestra (por ejemplo `http://192.168.0.10:8064/`). El celular tiene que estar en el mismo Wi-Fi.
+
+El catálogo queda solo en tu red: las capturas de GameBase64 son de uso personal y no se deben publicar en internet.
+
 Consejos:
 - **Nombres de 16 caracteres como máximo** (extensión incluida). Los más largos el firmware los muestra en formato 8.3 (`LASTNI~1.TAP`).
 - Si agregás juegos a una carpeta con índice, el browser lo detecta y muestra el listado normal hasta que regeneres el índice.
