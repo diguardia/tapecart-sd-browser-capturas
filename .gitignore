@@ -18,3 +18,7 @@ Screenshots/
 # Compilacion
 browser/*.o
 browser/tk.h
+
+# Python
+__pycache__/
+*.pyc
