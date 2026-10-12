@@ -1,0 +1,20 @@
+# Datos personales y derivados de GameBase64: uso personal, no se publican (ver README)
+local/
+*.db
+games.csv
+catalog.json
+out/
+Screenshots/
+*.mdb
+
+# Juegos e imagenes de disco/cinta: nunca al repositorio
+*.tap
+*.d64
+*.g64
+*.t64
+*.tcrt
+*.p00
+
+# Compilacion
+browser/*.o
+browser/tk.h
