@@ -22,3 +22,6 @@ browser/tk.h
 # Python
 __pycache__/
 *.pyc
+
+# Carpeta de trabajo de generar_sd.py
+trabajo/

@@ -42,7 +42,8 @@ Fork por **Christian Di Guardia** (Argentina), 2026.
 ### Instalación
 
 1. Hacé una copia de tu `browser.prg` original.
-2. Copiá `bin/browser.prg` a la raíz de la SD. El firmware siempre carga `/browser.prg`.
+2. Copiá **`bin/browser_es.prg`** (español) o **`bin/browser_en.prg`** (inglés) a la raíz de la SD y
+   renombralo a **`browser.prg`**: el firmware siempre carga `/browser.prg`.
 3. Sin índices, ya funciona: listado ordenado alfabéticamente.
 
 ### Generar índices y capturas para tu colección
@@ -50,18 +51,22 @@ Fork por **Christian Di Guardia** (Argentina), 2026.
 Los datos y capturas de GameBase64 son **solo para uso personal** (ver *Licencias*). Por eso este proyecto
 no incluye ningún índice: cada usuario los genera con su propia copia.
 
-1. Bajá de [gb64.com/downloads.php](https://www.gb64.com/downloads.php) la *GB64 Database* y las *GB64 Screenshots*.
-2. Extraé `GBC_vXX.mdb` del instalador sin ejecutarlo:
-   `innoextract -I GBC_v19.mdb gb64v19.exe`
-3. Exportá la base a CSV:
-   `powershell -File tools\export_gb64.ps1 -Mdb app\GBC_v19.mdb -Out games.csv`
-4. Armá el catálogo de tu SD (por ejemplo `E:\`):
-   `python -I tools\build_catalog.py E:\ games.csv catalog.json`
-   - Si tus archivos tienen nombres cortos, podés indicar el título real en `E:\titulos.csv`
-     (líneas `carpeta/archivo;Título`).
-5. Generá los índices y capturas:
-   `python -I tools\gen_db.py E:\ catalog.json Screenshots out`
-6. Copiá cada `out\<carpeta>\index.db` y `shots.db` a la misma carpeta de la SD.
+1. Bajá de [gb64.com/downloads.php](https://www.gb64.com/downloads.php) la *GB64 Database* y las *GB64 Screenshots*
+   (dos archivos `.7z`) y dejalos en una carpeta, por ejemplo `C:\Descargas\gb64`. No hace falta descomprimirlos.
+2. Instalá [innoextract](https://constexpr.org/innoextract/) (o dejá `innoextract.exe` en la carpeta `tools`).
+3. Con la SD conectada (por ejemplo en `E:\`), corré **un solo comando**:
+
+   `python -I tools\generar_sd.py --sd E:\ --gb64 C:\Descargas\gb64`
+
+   Descomprime lo necesario (sin ejecutar el instalador de GameBase64), busca cada juego de tu SD,
+   genera `index.db` y `shots.db` en cada carpeta y los copia a la SD. La primera vez tarda unos minutos.
+   Opciones: `--no-copiar` (solo genera, en `.\trabajo\out`) y `--catalogo catalogo-c64.json` (además arma
+   el archivo para el catálogo del celular).
+
+- Si tus archivos tienen nombres cortos, podés indicar el título real en `E:\titulos.csv`
+  (líneas `carpeta/archivo;Título`).
+- Requiere Windows con el driver ODBC de Microsoft Access (viene con Office o con *Access Database Engine*).
+- Los pasos por separado (`export_gb64.ps1`, `build_catalog.py`, `gen_db.py`) siguen disponibles en `tools/`.
 
 Consejos:
 - **Nombres de 16 caracteres como máximo** (extensión incluida). Los más largos el firmware los muestra en formato 8.3 (`LASTNI~1.TAP`).
@@ -109,6 +114,8 @@ build.bat      (Windows)
 ./build.sh     (Linux / macOS)
 ```
 
+Genera `bin/browser_es.prg`, `bin/browser_en.prg` (con `-DLANG_EN`; los textos están en `browser/lang.h`) y `bin/norma.prg`.
+
 El browser se puede probar en VICE con `browser/mock_tapecartif.c`, que simula el tapecart leyendo
 `dirlist`, `index.db` y `shots.db` desde una carpeta del PC montada como unidad 8.
 
@@ -141,7 +148,7 @@ It is a **fork of [Tapecart SD Browser v1.4-TAP](https://github.com/rainisto/tap
 by Kim Jørgensen, [tapecart](https://github.com/ikorb/tapecart) by Ingo Korb and Draco Browser by Sascha Bader.
 See [CREDITOS.md](CREDITOS.md).
 
-Fork by **Christian Di Guardia** (Argentina), 2026. The on-screen texts are in Spanish.
+Fork by **Christian Di Guardia** (Argentina), 2026. The browser comes in English and Spanish.
 
 ### What it adds
 
@@ -162,7 +169,8 @@ Fork by **Christian Di Guardia** (Argentina), 2026. The on-screen texts are in S
 ### Install
 
 1. Back up your original `browser.prg`.
-2. Copy `bin/browser.prg` to the SD root. The firmware always loads `/browser.prg`.
+2. Copy **`bin/browser_en.prg`** (English) or **`bin/browser_es.prg`** (Spanish) to the SD root and
+   rename it to **`browser.prg`**: the firmware always loads `/browser.prg`.
 3. Without indexes it already works, with an alphabetically sorted listing.
 
 ### Generating indexes and screenshots for your collection
@@ -170,17 +178,21 @@ Fork by **Christian Di Guardia** (Argentina), 2026. The on-screen texts are in S
 GameBase64 data and screenshots are **for personal use only** (see *Licenses*), so this project ships no
 index files: every user builds their own from their own copy.
 
-1. Download the *GB64 Database* and *GB64 Screenshots* from [gb64.com/downloads.php](https://www.gb64.com/downloads.php).
-2. Extract `GBC_vXX.mdb` from the installer without running it:
-   `innoextract -I GBC_v19.mdb gb64v19.exe`
-3. Export the database to CSV:
-   `powershell -File tools\export_gb64.ps1 -Mdb app\GBC_v19.mdb -Out games.csv`
-4. Build the catalog of your SD (e.g. `E:\`):
-   `python -I tools\build_catalog.py E:\ games.csv catalog.json`
-   - For files with short names, put the real title in `E:\titulos.csv` (lines `folder/file;Title`).
-5. Generate indexes and screenshots:
-   `python -I tools\gen_db.py E:\ catalog.json Screenshots out`
-6. Copy each `out\<folder>\index.db` and `shots.db` into the same folder on the SD.
+1. Download the *GB64 Database* and *GB64 Screenshots* from [gb64.com/downloads.php](https://www.gb64.com/downloads.php)
+   (two `.7z` files) into one folder, e.g. `C:\Downloads\gb64`. No need to extract them.
+2. Install [innoextract](https://constexpr.org/innoextract/) (or drop `innoextract.exe` into the `tools` folder).
+3. With the SD card connected (e.g. as `E:\`), run **a single command**:
+
+   `python -I tools\generar_sd.py --sd E:\ --gb64 C:\Downloads\gb64`
+
+   It extracts what it needs (without running the GameBase64 installer), matches every game on your SD,
+   builds `index.db` and `shots.db` for each folder and copies them to the SD. The first run takes a few minutes.
+   Options: `--no-copiar` (build only, into `.\trabajo\out`) and `--catalogo catalogo-c64.json` (also build
+   the phone catalog file).
+
+- For files with short names, put the real title in `E:\titulos.csv` (lines `folder/file;Title`).
+- Requires Windows with the Microsoft Access ODBC driver (comes with Office or the *Access Database Engine*).
+- The individual steps (`export_gb64.ps1`, `build_catalog.py`, `gen_db.py`) are still available in `tools/`.
 
 Tips:
 - **Keep file names at 16 characters or fewer** (extension included); longer ones show as 8.3 names (`LASTNI~1.TAP`).
@@ -227,6 +239,8 @@ Many European (PAL) games glitch on NTSC or PAL-N machines (Drean, Argentina): f
 build.bat      (Windows)
 ./build.sh     (Linux / macOS)
 ```
+
+It builds `bin/browser_es.prg`, `bin/browser_en.prg` (with `-DLANG_EN`; texts live in `browser/lang.h`) and `bin/norma.prg`.
 
 The browser can be tested in VICE with `browser/mock_tapecartif.c`, which fakes the tapecart by reading
 `dirlist`, `index.db` and `shots.db` from a PC folder mounted as drive 8.

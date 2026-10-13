@@ -6,6 +6,8 @@ param(
   [Parameter(Mandatory=$true)][string]$Mdb,
   [string]$Out = "games.csv"
 )
+$ErrorActionPreference = 'Stop'
+try {
 $cn = New-Object System.Data.Odbc.OdbcConnection("Driver={Microsoft Access Driver (*.mdb, *.accdb)};Dbq=$Mdb;")
 $cn.Open()
 $cmd = $cn.CreateCommand()
@@ -16,5 +18,12 @@ $da = New-Object System.Data.Odbc.OdbcDataAdapter($cmd)
 $dt = New-Object System.Data.DataTable
 [void]$da.Fill($dt)
 $cn.Close()
+$da.Dispose(); $cmd.Dispose(); $cn.Dispose()
+[System.Data.Odbc.OdbcConnection]::ReleaseObjectPool()
 $dt | Export-Csv -NoTypeInformation -Encoding UTF8 $Out
 "Exportados $($dt.Rows.Count) juegos a $Out"
+} catch {
+  Write-Error "No se pudo exportar / Export failed: $_  (falta el driver ODBC de Access? / Access ODBC driver missing?)"
+  exit 1
+}
+exit 0

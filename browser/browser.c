@@ -30,6 +30,7 @@
 #include <joystick.h>
 #include "tapecartif.h"
 #include "loader.h"
+#include "lang.h"
 
 /* nombre del autor del fork */
 #ifndef AUTHOR
@@ -90,9 +91,7 @@ typedef struct {
 } DirElem;
 
 static const char *genres[] = {
-    "", "Arcade", "Shoot'em up", "Aventura", "Ingenio", "Educativo",
-    "Deportes", "Estrategia", "Azar", "Tablero", "Cartas", "Carreras",
-    "Simulador", "Varios"
+    S_GENRES
 };
 #define N_GENRES (sizeof(genres) / sizeof(genres[0]))
 
@@ -272,7 +271,7 @@ static void open_dir(const char *path)
 
     gotoxy(0, 24);
     textcolor(COLOR_YELLOW);
-    cputs(" leyendo...                             ");
+    cputs(S_READING);
 
     tapecart_open_dir(p, cur_dir);
     cur_dir[FILENAME_LENGTH] = 0;
@@ -352,7 +351,7 @@ static void print_info(void)
     get_entry(selected, &e);
     if (indexed && e.type != FILE_DIR) {
         sprintf(line, " %-12.12s %-19.19s%s", genres[e.genre], e.publisher,
-                e.shot != 0xFFFF ? " [foto]" : "       ");
+                e.shot != 0xFFFF ? S_SHOT_TAG : "       ");
         line[40] = 0;
         cputs(line);
     } else {
@@ -398,8 +397,7 @@ static void draw_frame(void)
 
     gotoxy(0, 24);
     textcolor(COLOR_GRAY2);
-    cputs(indexed && has_shots ? "ret jugar spc foto del atras home raiz"
-                               : "ret jugar/abrir  del atras  home raiz  ");
+    cputs(indexed && has_shots ? S_HELP_SHOTS : S_HELP_PLAIN);
 }
 
 static void update_counter(void)
@@ -445,7 +443,7 @@ static uint8_t show_shot(uint16_t slot)
 
     gotoxy(0, 24);
     textcolor(COLOR_YELLOW);
-    cputs(" cargando foto...                       ");
+    cputs(S_LOADING_SHOT);
 
     select_name(SHOT_NAME);
     tapecart_read_flash_fast(base, 16, tmp_hdr);
@@ -549,28 +547,28 @@ static void about(void)
 {
     clrscr();
     textcolor(COLOR_YELLOW);
-    gotoxy(0, 0);  cputs("tapecart sd browser con capturas v2.0");
+    gotoxy(0, 0);  cputs(S_TITLE);
     textcolor(COLOR_WHITE);
-    gotoxy(0, 1);  cputs("fork por " AUTHOR ", 2026");
+    gotoxy(0, 1);  cputs(S_FORK_BY AUTHOR ", 2026");
     textcolor(COLOR_LIGHTGREEN);
-    gotoxy(0, 3);  cputs("fork de tapecart sd browser v1.4-tap");
+    gotoxy(0, 3);  cputs(S_FORK_OF);
     gotoxy(0, 4);  cputs(" github.com/rainisto/tapecart");
     gotoxy(0, 5);  cputs("tapecart sd (c) kim jorgensen");
     gotoxy(0, 6);  cputs(" github.com/kimjorgensen/tapecart");
     gotoxy(0, 7);  cputs("tapecart (c) 2013-2017 ingo korb");
     gotoxy(0, 8);  cputs("draco browser v1.0c (c) 2009 draco");
-    gotoxy(0, 10); cputs("capturas y datos: gamebase64 (gb64.com)");
-    gotoxy(0, 11); cputs("solo para uso personal");
+    gotoxy(0, 10); cputs(S_SHOTS_DATA);
+    gotoxy(0, 11); cputs(S_PERSONAL);
     textcolor(COLOR_GRAY2);
-    gotoxy(0, 14); cputs("ret  jugar / abrir carpeta");
-    gotoxy(0, 15); cputs("spc  ver captura");
-    gotoxy(0, 16); cputs("del  carpeta anterior");
-    gotoxy(0, 17); cputs("home carpeta raiz");
-    gotoxy(0, 18); cputs("crsr arriba/abajo, izq/der = pagina");
-    gotoxy(0, 19); cputs("t/b  principio / final");
-    gotoxy(0, 20); cputs("q    salir");
+    gotoxy(0, 14); cputs(S_K_RET);
+    gotoxy(0, 15); cputs(S_K_SPC);
+    gotoxy(0, 16); cputs(S_K_DEL);
+    gotoxy(0, 17); cputs(S_K_HOME);
+    gotoxy(0, 18); cputs(S_K_CRSR);
+    gotoxy(0, 19); cputs(S_K_TB);
+    gotoxy(0, 20); cputs(S_K_Q);
     textcolor(COLOR_LIGHTRED);
-    gotoxy(0, 23); cputs("sin garantia. use bajo su riesgo.");
+    gotoxy(0, 23); cputs(S_NOWARRANTY);
     cgetc();
     redraw();
 }
@@ -596,13 +594,13 @@ int main(void)
 
     /* presentacion */
     textcolor(COLOR_YELLOW);
-    gotoxy(1, 10); cputs("tapecart sd browser con capturas v2.0");
+    gotoxy(1, 10); cputs(S_TITLE);
     textcolor(COLOR_WHITE);
-    gotoxy(1, 12); cputs("por " AUTHOR);
+    gotoxy(1, 12); cputs(S_BY AUTHOR);
     textcolor(COLOR_GRAY2);
-    gotoxy(1, 14); cputs("fork de tapecart sd browser v1.4-tap");
-    gotoxy(1, 15); cputs("(rainisto, kim jorgensen, ingo korb)");
-    gotoxy(1, 17); cputs("tecla . para creditos y ayuda");
+    gotoxy(1, 14); cputs(S_FORK_OF);
+    gotoxy(1, 15); cputs(S_FORK_AUTHORS);
+    gotoxy(1, 17); cputs(S_PRESS_DOT);
     {
         uint8_t f;
         for (f = 0; f < 90 && !kbhit(); ++f) {   /* ~1,5 s o una tecla */
@@ -613,13 +611,13 @@ int main(void)
     clrscr();
 
     if (joy_install(&joy_static_stddrv) != JOY_ERR_OK) {
-        cputs("error: joystick");
+        cputs(S_ERR_JOY);
         cgetc();
         return 0;
     }
     if (!tapecart_cmdmode()) {
         textcolor(COLOR_LIGHTRED);
-        cputs("error: no se detecta el tapecart.");
+        cputs(S_ERR_TC);
         cgetc();
         return 0;
     }
